@@ -35,73 +35,61 @@ public class PersonController {
 	@GetMapping("{id}")
 	public PersonDto getPerson(@PathVariable Integer id, HttpServletResponse response) {
 		PersonDto person = personService.getPerson(id);
-		if (person == null) {
+		if (person == null)
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		} else {
-			response.setStatus(HttpServletResponse.SC_FOUND);
-		}
+		response.setStatus(HttpServletResponse.SC_FOUND);
 		return person;
 	}
 
 	@PostMapping
 	public PersonDto createPerson(@RequestBody PersonDto person, HttpServletResponse response) {
 		PersonDto newPerson = personService.createPerson(person);
-		if (newPerson == null) {
+		if (newPerson == null)
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		} else {
-			response.setStatus(HttpServletResponse.SC_CREATED);
-		}
+		response.setStatus(HttpServletResponse.SC_CREATED);
 		return newPerson;
 	}
 
 	@PutMapping("{id}")
-	public PersonDto overwritePerson(@PathVariable long id, @RequestBody PersonDto person, HttpServletResponse response) {
+	public PersonDto overwritePerson(@PathVariable long id, @RequestBody PersonDto person,
+			HttpServletResponse response) {
 		PersonDto replacementPerson = personService.overwritePerson(id, person);
-		if (replacementPerson == null) {
+		if (replacementPerson == null)
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		} else {
-			response.setStatus(HttpServletResponse.SC_CREATED);
-		}
+		response.setStatus(HttpServletResponse.SC_CREATED);
 		return replacementPerson;
 	}
 
 	@PatchMapping("{id}")
 	public void deletePerson(@PathVariable long id, HttpServletResponse response) {
 		boolean deleted = personService.deletePerson(id);
-		if (deleted == true) {
+		if (deleted == true)
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
 	}
-	
+
 	@GetMapping("{id}/friends")
 	public Set<PersonDto> getFriends(@PathVariable long id, HttpServletResponse response) {
 		Set<PersonDto> friends = personService.getFriends(id);
-		if (friends == null) {
+		if (friends == null)
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		} else {
-			response.setStatus(HttpServletResponse.SC_FOUND);
-		}
+		response.setStatus(HttpServletResponse.SC_FOUND);
 		return friends;
 	}
-	
+
 	@PostMapping("{id}/friends/{friendId}")
 	public void addFriend(@PathVariable long id, @PathVariable long friendId, HttpServletResponse response) {
-		if(personService.getPerson(id) == null || personService.getPerson(friendId) == null) {
+		if (personService.getPerson(id) == null || personService.getPerson(friendId) == null)
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		} else {
-			personService.addFriend(id, friendId);
-			response.setStatus(HttpServletResponse.SC_ACCEPTED);
-		}
+		personService.addFriend(id, friendId);
+		response.setStatus(HttpServletResponse.SC_ACCEPTED);
 	}
-	
+
 	@DeleteMapping("{id}/friends/{friendId}")
 	public void removeFriend(@PathVariable long id, @PathVariable long friendId, HttpServletResponse response) {
-		if(personService.getPerson(id) == null || personService.getPerson(friendId) == null) {
+		if (personService.getPerson(id) == null || personService.getPerson(friendId) == null)
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		} else {
-			personService.removeFriend(id, friendId);
-			response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-		}
+		personService.removeFriend(id, friendId);
+		response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
 	}
-	
+
 }
